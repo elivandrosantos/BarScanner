@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.barscanner.ui.theme.BarScannerTheme
 import com.example.barscanner.util.BarcodeScanner
@@ -47,7 +46,8 @@ class MainActivity : ComponentActivity() {
                     val barcodeResults = barcodeScanner.barCodeResults.collectAsStateWithLifecycle()
                     ScanBarcode(
                         onScanBarcode = barcodeScanner::startScan,
-                        barcodeValue = barcodeResults.value)
+                        barcodeValue = barcodeResults.value
+                    )
                 }
             }
         }
@@ -90,7 +90,7 @@ private fun ScanBarcode(
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
-            text = barcodeValue ?: "0000000000",
+            text = barcodeValue ?: "",
             modifier = Modifier.padding(),
             style = MaterialTheme.typography.displaySmall
         )
@@ -98,18 +98,4 @@ private fun ScanBarcode(
     }
 }
 
-@Preview
-@Composable
-fun PreviewScanBarcode() {
-    BarScannerTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.primary
-        ) {
-
-            ScanBarcode({}, null)
-        }
-    }
-}
 

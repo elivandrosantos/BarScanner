@@ -6,22 +6,20 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class BarcodeScanner(
-    appContext: Context
-) {
+class BarcodeScanner(appContext: Context) {
     private val options = GmsBarcodeScannerOptions.Builder()
-        .setBarcodeFormats(
-            Barcode.FORMAT_ALL_FORMATS
-        ).build()
+        .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)
+        .allowManualInput()
+        .enableAutoZoom()
 
-    private val scanner = GmsBarcodeScanning.getClient(appContext, options)
+    private val scanner = GmsBarcodeScanning.getClient(appContext, options.build())
     val barCodeResults = MutableStateFlow<String?>(null)
 
-    suspend fun startScan() {
+    fun startScan() {
         try {
             scanner.startScan()
                 .addOnSuccessListener { barcode ->
-                    barCodeResults.value = barcode.displayValue
+                    barCodeResults.value = barcode.rawValue
                 }
                 .addOnCanceledListener {
                     barCodeResults.value = "canceled"
